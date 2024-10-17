@@ -6,20 +6,14 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SidebarNav from "./SideBarNav";
 import SidebarToggle from "./SidebarToggle";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+
 import UserProfileSection from "./UserProfileSection";
+import { useUser } from "@clerk/nextjs";
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { isSignedIn } = useUser();
-
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,14 +84,9 @@ function Sidebar() {
           <SidebarNav isCollapsed={isCollapsed} />
         </div>
         <div>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          {isSignedIn && <UserProfileSection isCollapsed={isCollapsed} />}
         </div>
-        {isSignedIn && <UserProfileSection isCollapsed={isCollapsed} />}
+
         <SidebarToggle
           isCollapsed={isCollapsed}
           toggleSidebar={toggleCollapse}
